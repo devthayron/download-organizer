@@ -1,0 +1,11 @@
+{
+    "regras": {
+        "Imagens": ["jpg", "jpeg", "png", "gif", "webp", "svg"],
+        "Videos": ["mp4", "mkv", "avi", "mov", "webm"],
+        "Documentos": ["pdf", "docx", "doc", "txt", "odt"],
+        "Planilhas": ["xls", "xlsx", "csv", "ods"],
+        "Apresentacoes": ["ppt", "pptx", "odp"],
+        "Compactados": ["zip", "rar", "7z", "tar", "gz"],
+        "Configuracao": ["cfg", "json", "yaml", "yml", "ini"]
+    }
+}
