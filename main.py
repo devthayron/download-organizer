@@ -1,8 +1,11 @@
 import argparse
 import json
-
+import logging
 from organizador import OrganizadorPastas
+from logger import configurar_logger
 
+
+logger = logging.getLogger(__name__)
 
 def carregar_config(caminho_config="config.json"):
     """Carrega as configurações do arquivo JSON."""
@@ -17,8 +20,6 @@ def organizar():
     organizador = OrganizadorPastas(config)
     organizador.organizar_downloads()
 
-    print("✓ Downloads organizados com sucesso!")
-
 
 def desfazer():
     """Restaura os arquivos organizados para a pasta Downloads."""
@@ -27,10 +28,9 @@ def desfazer():
     organizador = OrganizadorPastas(config)
     organizador.desfazer_organizacao()
 
-    print("✓ Organização desfeita!")
 
-
-def main():
+def main(): 
+    configurar_logger()
     parser = argparse.ArgumentParser(
         description="Organizador de Downloads"
     )
@@ -52,7 +52,7 @@ def main():
             desfazer()
 
     except FileNotFoundError:
-        print("Erro: arquivo 'config.json' não encontrado.")
+        logger.error("Arquivo 'config.json' não encontrado.")
 
 
 if __name__ == "__main__":

@@ -13,6 +13,7 @@ Ferramenta em Python para automação da organização da pasta Downloads, moven
 * Ignora pastas e arquivos ocultos
 * Ignora arquivos sem regra definida durante a organização
 * Restaura arquivos organizados de volta para a pasta Downloads
+* Sistema de logging para monitoramento das operações (terminal + arquivo)
 
 ---
 
