@@ -80,10 +80,78 @@ Exemplos de eventos:
 
 ---
 
+## Execução como serviço (systemd)
+
+O sistema pode rodar como um serviço do systemd, iniciando automaticamente no boot da máquina, sem depender de login gráfico.
+
+### 1. Criar o ambiente virtual
+
+```bash
+cd /caminho/do/projeto
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+deactivate
+```
+
+### 2. Criar o unit file
+
+```bash
+sudo nano /etc/systemd/system/organizador-downloads.service
+```
+
+Conteúdo (ajuste `User` e os caminhos conforme seu ambiente):
+
+```ini
+[Unit]
+Description=Organizador de Downloads em tempo real
+After=network.target
+
+[Service]
+Type=simple
+User=SEU_USUARIO
+WorkingDirectory=/caminho/do/projeto
+ExecStart=/caminho/do/projeto/venv/bin/python main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### 3. Ativar e iniciar o serviço
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable organizador-downloads.service
+sudo systemctl start organizador-downloads.service
+```
+
+### 4. Comandos do dia a dia
+
+```bash
+# Verificar status
+sudo systemctl status organizador-downloads.service
+
+# Acompanhar logs em tempo real
+journalctl -u organizador-downloads.service -f
+
+# Reiniciar (após atualizar o código com git pull)
+sudo systemctl restart organizador-downloads.service
+
+# Parar/iniciar manualmente
+sudo systemctl stop organizador-downloads.service
+sudo systemctl start organizador-downloads.service
+```
+
+`WorkingDirectory` deve apontar para a pasta onde está o `config.json`, já que ele é carregado por caminho relativo. `Restart=on-failure` garante que o serviço reinicia sozinho caso ocorra algum erro inesperado.
+
+---
+
 ## Evolução
 
-* Execução como serviço (systemd / Windows Service)
 * CLI instalável via pip
+* Suporte a Windows Service
 
 ---
 
