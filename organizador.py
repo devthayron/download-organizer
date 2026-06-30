@@ -128,7 +128,7 @@ class OrganizadorPastas:
             
             pasta = self.mover_arquivo(arquivo)
             if pasta == 'Outros':
-                Outros += 1
+                outros += 1
             else:
                 movidos += 1
 
