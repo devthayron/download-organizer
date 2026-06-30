@@ -1,155 +1,93 @@
-# Organizador de Downloads
+# Organizador de Downloads (Tempo Real)
 
-Ferramenta em Python para automação da organização da pasta Downloads, movendo arquivos para subpastas por categoria com base em regras definidas em um arquivo JSON de configuração.
+Sistema de automação em Python baseado em eventos que organiza automaticamente a pasta Downloads em tempo real.
+
+Arquivos são detectados e movidos automaticamente para suas categorias assim que o download é concluído.
+
+O sistema mantém a pasta Downloads continuamente organizada sem intervenção manual.
+
+---
+
+## Problema que resolve
+
+A pasta Downloads tende a se tornar desorganizada com o tempo, dificultando a localização de arquivos.
+
+Este sistema automatiza a organização contínua da pasta, cobrindo tanto arquivos existentes quanto novos downloads.
+
+---
+
+## Funcionamento do sistema
+
+O sistema opera em dois fluxos:
+
+* Processamento inicial da pasta Downloads (arquivos já existentes)
+* Monitoramento contínuo para novos arquivos em tempo real
+
+### Camada de estabilidade de arquivos
+
+Antes de mover qualquer arquivo, o sistema valida se o download foi concluído de fato, monitorando a estabilidade do tamanho do arquivo ao longo do tempo.
+
+Arquivos só são processados quando não há mais alterações no seu tamanho, evitando movimentação prematura durante downloads em andamento.
+
+A arquitetura interna é dividida em três etapas:
+
+#### 1. Leitura inicial
+
+Escaneia e processa todos os arquivos existentes na pasta Downloads.
+
+#### 2. Motor de organização
+
+Classifica arquivos por extensão e define o destino correto.
+
+#### 3. Monitoramento em tempo real
+
+Detecta novos arquivos via eventos do sistema (watchdog) e os processa automaticamente.
+
+---
+
+## Regras de organização
+
+* Arquivos com extensão conhecida são movidos para suas categorias
+* Arquivos sem extensão ou não mapeados vão para `Outros`
+* Diretórios são ignorados automaticamente
 
 ---
 
 ## Funcionalidades
 
-* Move arquivos da pasta Downloads para subpastas por extensão
-* Suporte a regras configuráveis via arquivo JSON
-* Cria pastas automaticamente quando necessário
-* Trata arquivos duplicados sem sobrescrever
-* Ignora pastas e arquivos ocultos
-* Ignora arquivos sem regra definida durante a organização
-* Restaura arquivos organizados de volta para a pasta Downloads
-* Sistema de logging para monitoramento das operações (terminal + arquivo)
+* Organização automática por extensão
+* Processamento inicial da pasta Downloads
+* Monitoramento contínuo em tempo real
+* Criação automática de pastas
+* Tratamento de duplicatas
+* Pasta fallback "Outros"
+* Configuração via `config.json`
+* Sistema de logs para rastreabilidade
 
 ---
 
-## Pré-requisitos
+## Logs do sistema
 
-* Python 3.9 ou superior
-* Apenas bibliotecas da biblioteca padrão do Python
-
----
-
-## Instalação
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/devthayron/download-organizer.git
-cd download-organizer
-```
-
----
-
-## Configuração
-
-Edite o arquivo `config.json` conforme suas necessidades:
-
-```json
-{
-    "regras": {
-        "Imagens": ["jpg", "jpeg", "png", "gif", "webp", "svg"],
-        "Videos": ["mp4", "mkv", "avi", "mov", "webm"],
-        "Documentos": ["pdf", "docx", "doc", "txt", "odt"],
-        "Planilhas": ["xls", "xlsx", "csv", "ods"],
-        "Apresentacoes": ["ppt", "pptx", "odp"],
-        "Compactados": ["zip", "rar", "7z", "tar", "gz"],
-        "Configuracao": ["cfg", "json", "yaml", "yml", "ini"]
-    }
-}
-```
-
-> Recomenda-se manter o arquivo `config.json` fora da pasta `Downloads` para evitar movimentações acidentais.
-
----
-
-## Uso
-
-Organizar os arquivos:
-
-```bash
-python main.py
-```
-
-ou
-
-```bash
-python main.py organizar
-```
-
-Restaurar os arquivos para a pasta Downloads:
-
-```bash
-python main.py desfazer
-```
-
----
-
-## Exemplo
-
-Antes:
+Exemplos de eventos:
 
 ```text
-Downloads/
-├── foto.jpg
-├── planilha.xlsx
-├── documento.pdf
-├── video.mp4
-```
-
-Após executar:
-
-```bash
-python main.py
-```
-
-Resultado:
-
-```text
-Downloads/
-├── Imagens/
-│   └── foto.jpg
-├── Planilhas/
-│   └── planilha.xlsx
-├── Documentos/
-│   └── documento.pdf
-└── Videos/
-    └── video.mp4
+30-06-2026 14:24:50 | INFO | monitor | Processando arquivos existentes...
+30-06-2026 14:24:50 | INFO | organizador | Movendo arquivo.png → Imagens/arquivo.png
+30-06-2026 14:24:50 | INFO | organizador | Movendo arquivo.pdf → Documentos/arquivo.pdf
+30-06-2026 14:24:50 | INFO | organizador | Organização concluída! 2 arquivos movidos, 0 para Outros.
+30-06-2026 14:24:50 | INFO | monitor | Watchdog iniciado. Monitorando: /home/user/Downloads
 ```
 
 ---
 
-## Como funciona
+## Evolução
 
-* As pastas de destino são criadas automaticamente caso não existam.
-* Arquivos ocultos e diretórios são ignorados.
-* Arquivos com extensões não cadastradas permanecem no local original.
-* Extensões sem regra definida são exibidas no terminal:
-
-```text
-Ignorado (arquivo sem regra definida): arquivo.xyz
-```
-
-## Tratamento de duplicatas
-
-Caso já exista um arquivo com o mesmo nome no destino, um sufixo numérico é adicionado automaticamente:
-
-```text
-foto.jpg
-foto(1).jpg
-foto(2).jpg
-```
-
----
-
-## Estrutura do Projeto
-
-```text
-organizador-downloads/
-├── main.py
-├── organizador.py
-├── config.json
-└── README.md
-```
+* Execução como serviço (systemd / Windows Service)
+* CLI instalável via pip
 
 ---
 
 ## Autor
 
-**Thayron Higlânder**
-
-LinkedIn: https://www.linkedin.com/in/thayron-higlander
+Thayron Higlânder
+LinkedIn: [https://www.linkedin.com/in/thayron-higlander](https://www.linkedin.com/in/thayron-higlander)

@@ -6,6 +6,11 @@
         "Planilhas": ["xls", "xlsx", "csv", "ods"],
         "Apresentacoes": ["ppt", "pptx", "odp"],
         "Compactados": ["zip", "rar", "7z", "tar", "gz"],
-        "Configuracao": ["cfg", "json", "yaml", "yml", "ini"]
-    }
+        "Configuracao": ["cfg", "json", "yaml", "yml", "ini"],
+        "Outros": []
+    },
+    "ignorar_extensoes": [
+        "tmp", "temp", "crdownload", "part", "partial", "download", "opdownload"
+    ],
+    "intervalo_estabilidade_segundos": 2
 }
