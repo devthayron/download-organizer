@@ -121,7 +121,7 @@ Downloads/
 * Extensões sem regra definida são exibidas no terminal:
 
 ```text
-Arquivo ignorado (sem regra definida): arquivo.xyz
+Ignorado (arquivo sem regra definida): arquivo.xyz
 ```
 
 ## Tratamento de duplicatas

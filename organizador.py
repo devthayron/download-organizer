@@ -15,8 +15,15 @@ class OrganizadorPastas:
     """
 
     def __init__(self, config, caminho_downloads=None):
-        self.regras = config["regras"]
+        self.regras = config.get("regras")
+
+        if not isinstance(self.regras, dict) or not self.regras:
+            raise ValueError("Config inválida: 'regras' deve ser um dict não vazio")
+
         self.caminho_downloads = caminho_downloads or Path.home() / "Downloads"
+        if not self.caminho_downloads.exists():
+            raise FileNotFoundError(f"Pasta não encontrada: {self.caminho_downloads}")
+        
         self.mapa_extensoes = self._mapear_extensoes()
 
     def _mapear_extensoes(self):
@@ -75,7 +82,7 @@ class OrganizadorPastas:
         destino_base = self.caminho_downloads / pasta_destino / arquivo.name
         destino = self._gerar_destino_unico(destino_base)
 
-        logger.info(f"Movendo {arquivo.name} → {destino.relative_to(self.caminho_downloads)}")
+        logger.info(f"Movendo {arquivo.name} → {destino.parent.name}/{destino.name}")
         shutil.move(arquivo, destino)
 
     def organizar_downloads(self):
