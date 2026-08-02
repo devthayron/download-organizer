@@ -1,4 +1,4 @@
-# Organizador de Downloads (Tempo Real)
+# Organizador de Downloads em Tempo Real
 
 Sistema de automação em Python baseado em eventos que organiza automaticamente a pasta Downloads em tempo real.
 
@@ -66,6 +66,17 @@ Detecta novos arquivos via eventos do sistema (watchdog) e os processa automatic
 
 ---
 
+## Tecnologias
+
+- Python 3
+- Watchdog
+- pathlib
+- shutil
+- logging
+- systemd (opcional)
+
+---
+
 ## Logs do sistema
 
 Exemplos de eventos:
@@ -79,10 +90,36 @@ Exemplos de eventos:
 ```
 
 ---
+## Como executar
 
-## Execução como serviço (systemd)
+### Opção 1 — Executar normalmente
 
-O sistema pode rodar como um serviço do systemd, iniciando automaticamente no boot da máquina, sem depender de login gráfico.
+Clone o repositório e instale as dependências:
+
+```bash
+git clone https://github.com/devthayron/download-organizer.git
+cd download-organizer
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+Inicie o sistema:
+
+```bash
+python main.py
+```
+
+O organizador processará os arquivos existentes na pasta Downloads e continuará monitorando novos arquivos em tempo real até ser interrompido (`Ctrl + C`).
+
+---
+
+### Opção 2 — Executar como serviço (systemd)
+
+O sistema também pode rodar como um serviço do systemd, iniciando automaticamente junto com o sistema operacional.
+
 
 ### 1. Criar o ambiente virtual
 
@@ -148,14 +185,16 @@ sudo systemctl start organizador-downloads.service
 
 ---
 
-## Evolução
+## Melhorias futuras
 
-* CLI instalável via pip
-* Suporte a Windows Service
+- CLI instalável via pip
+- Suporte a Windows Service
+- Sugestão inteligente de categorias utilizando IA
 
 ---
 
 ## Autor
 
-Thayron Higlânder
+**Thayron Higlânder**
+
 LinkedIn: [https://www.linkedin.com/in/thayron-higlander](https://www.linkedin.com/in/thayron-higlander)
